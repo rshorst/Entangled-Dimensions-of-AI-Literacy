@@ -10,16 +10,36 @@
       font-family: sans-serif;
       text-align: center;
     }
-    img {
-      max-width: 100%;
-      height: auto;
+
+    h1 {
       margin-top: 20px;
+    }
+
+    .image-container {
+      width: 100%;
+      max-width: 1200px;
+      height: 85vh; /* Adjust this to crop more or less */
+      overflow: hidden;
+      margin: 0 auto;
+    }
+
+    .image-container img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    p {
+      font-size: 14px;
+      margin: 20px 0;
     }
   </style>
 </head>
 <body>
   <h1>Entangled Dimensions of AI Literacy</h1>
-  <img src="Entangled Dimensions of AI literacy_Full.png" alt="AI Literacy Framework">
-  <p style="font-size: 14px;">© Rachel Horst · <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></p>
+  <div class="image-container">
+    <img src="Entangled Dimensions of AI literacy_Full.png" alt="AI Literacy Framework">
+  </div>
+  <p>© Rachel Horst · <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></p>
 </body>
 </html>
