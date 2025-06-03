@@ -43,8 +43,7 @@ You are welcome to use, adapt, or share these materials **with attribution**.
 If you use or adapt this framework, please include the following citation:
 
 **The Entangled Dimensions of AI Literacy** (2025)  
-by Rachel Horst, PhD 
-[https://github.com/yourusername/ai-literacy-framework](#) * [rachelhorst](https://www.rachelhorst.ca/).ca
+by Rachel Horst, PhD
 
 ---
 
@@ -52,4 +51,7 @@ by Rachel Horst, PhD
 
 If you'd like to discuss the framework, collaborate, or share how you’re using it, feel free to reach out.  
 You can also connect via [[LinkedIn](#)](https://www.linkedin.com/in/rachelhorst-futures/) or mail@rachelhorst.ca
+[https://github.com/yourusername/ai-literacy-framework](#) 
+[rachelhorst](https://www.rachelhorst.ca/).ca
+
 
