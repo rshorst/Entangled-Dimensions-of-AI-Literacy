@@ -13,7 +13,7 @@ AI literacy, in this framing, is not a binary (literate/illiterate) but a multid
 - 🖼️ High-resolution version of the full framework (PNG + PDF)
 - 🧭 Slide-based carousel for presentations and teaching
 - 📝 Provocation questions for each dimension
-- 🎨 Editable source files (e.g., PowerPoint and Illustrator)
+- 🎨 Editable source files (PowerPoint and Illustrator)
 
 ---
 
