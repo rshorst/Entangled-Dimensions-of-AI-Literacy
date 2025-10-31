@@ -4,30 +4,37 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Entangled Dimensions of AI Literacy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
       background: #f5f5f5;
-      font-family: sans-serif;
+      font-family: 'Inter', sans-serif;
       text-align: center;
     }
     .header {
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: white;
-      padding: 40px 20px;
+      padding: 50px 20px;
       box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     }
     h1 {
-      font-size: 2.5em;
-      font-weight: 300;
+      font-family: 'Playfair Display', serif;
+      font-size: 3em;
+      font-weight: 700;
       margin: 0;
-      letter-spacing: 1px;
+      letter-spacing: 2px;
     }
     .subtitle {
-      font-size: 1.1em;
-      margin-top: 10px;
-      opacity: 0.9;
+      font-family: 'Inter', sans-serif;
+      font-size: 1.2em;
+      margin-top: 20px;
+      opacity: 0.95;
       font-weight: 300;
+      line-height: 1.6;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
     }
     .image-section {
       margin: 40px auto 20px;
@@ -69,6 +76,7 @@
     canvas {
       border: 1px solid #ddd;
       max-width: 100%;
+      max-height: 70vh;
       height: auto;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
@@ -88,6 +96,7 @@
       border: none;
       border-radius: 4px;
       transition: background 0.3s;
+      font-family: 'Inter', sans-serif;
     }
     button:hover {
       background: #764ba2;
@@ -113,6 +122,7 @@
       margin-top: 0;
       color: #333;
       font-size: 1.3em;
+      font-family: 'Playfair Display', serif;
     }
     .citation-text {
       background: #f9f9f9;
@@ -134,7 +144,7 @@
 <body>
   <div class="header">
     <h1>Entangled Dimensions of AI Literacy</h1>
-    <div class="subtitle">A Framework for Computational Sense-Making</div>
+    <div class="subtitle">From skills to entanglement: an approach for navigating the complexities of a digitally saturated world.</div>
   </div>
   
   <div class="image-section">
@@ -179,10 +189,10 @@
     const canvas = document.getElementById('pdf-canvas');
     const ctx = canvas.getContext('2d');
 
-    // Calculate scale to fit screen width
+    // Calculate scale to fit within viewport height (70vh)
     function getScale() {
-      const maxWidth = Math.min(window.innerWidth * 0.9, 1200);
-      return maxWidth / 612; // 612 is standard PDF page width in points
+      const maxHeight = window.innerHeight * 0.7; // 70% of viewport height
+      return maxHeight / 792; // 792 is standard PDF page height in points (letter size)
     }
 
     // Load PDF
