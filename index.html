@@ -7,18 +7,64 @@
   <style>
     body {
       margin: 0;
-      background: #fff;
+      background: #f5f5f5;
       font-family: sans-serif;
       text-align: center;
     }
+    .header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 40px 20px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    h1 {
+      font-size: 2.5em;
+      font-weight: 300;
+      margin: 0;
+      letter-spacing: 1px;
+    }
+    .subtitle {
+      font-size: 1.1em;
+      margin-top: 10px;
+      opacity: 0.9;
+      font-weight: 300;
+    }
+    .image-section {
+      margin: 40px auto 20px;
+      padding-bottom: 20px;
+    }
     img {
-      max-width: 100%;
+      max-width: 90%;
       height: auto;
       margin-top: 20px;
     }
+    .scroll-indicator {
+      font-size: 18px;
+      color: #555;
+      margin: 20px 0;
+      animation: bounce 2s infinite;
+    }
+    .scroll-indicator::after {
+      content: " ↓";
+      font-size: 24px;
+    }
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+      }
+      40% {
+        transform: translateY(-10px);
+      }
+      60% {
+        transform: translateY(-5px);
+      }
+    }
     .pdf-viewer {
-      max-width: 900px;
+      max-width: 100%;
       margin: 40px auto;
+      padding: 40px 20px;
+      background: white;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
     }
     canvas {
       border: 1px solid #ddd;
@@ -37,13 +83,14 @@
       padding: 10px 20px;
       font-size: 16px;
       cursor: pointer;
-      background: #333;
+      background: #667eea;
       color: white;
       border: none;
       border-radius: 4px;
+      transition: background 0.3s;
     }
     button:hover {
-      background: #555;
+      background: #764ba2;
     }
     button:disabled {
       background: #ccc;
@@ -53,13 +100,48 @@
       font-size: 16px;
       min-width: 120px;
     }
+    .citation-box {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 30px;
+      background: white;
+      border-left: 4px solid #667eea;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      text-align: left;
+    }
+    .citation-box h3 {
+      margin-top: 0;
+      color: #333;
+      font-size: 1.3em;
+    }
+    .citation-text {
+      background: #f9f9f9;
+      padding: 15px;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.95em;
+      line-height: 1.6;
+      color: #333;
+      margin: 15px 0;
+    }
+    .footer {
+      padding: 20px;
+      font-size: 14px;
+      color: #666;
+    }
   </style>
 </head>
 <body>
-  <h1>Entangled Dimensions of AI Literacy</h1>
+  <div class="header">
+    <h1>Entangled Dimensions of AI Literacy</h1>
+    <div class="subtitle">A Framework for Computational Sense-Making</div>
+  </div>
   
-  <!-- Optional: Keep the image or remove this section -->
-  <img src="Entangled%20Dimensions%20of%20AI%20literacy_NA.png" alt="AI Literacy Framework">
+  <div class="image-section">
+    <img src="Entangled%20Dimensions%20of%20AI%20literacy_NA.png" alt="AI Literacy Framework">
+  </div>
+  
+  <div class="scroll-indicator">Scroll down to explore the framework</div>
   
   <!-- PDF Viewer -->
   <div class="pdf-viewer">
@@ -74,7 +156,17 @@
     </div>
   </div>
   
-  <p style="font-size: 14px;">© Rachel Horst · <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></p>
+  <!-- Citation Box -->
+  <div class="citation-box">
+    <h3>How to Cite This Framework</h3>
+    <div class="citation-text">
+      Horst, R. (2025). Entangled dimensions of AI literacy: A framework for computational sense-making. University of British Columbia. https://rshorst.github.io/Entangled-Dimensions-of-AI-Literacy/
+    </div>
+  </div>
+  
+  <div class="footer">
+    © Rachel Horst · <a href="https://creativecommons.org/licenses/by/4.0/" style="color: #667eea;">CC BY 4.0</a>
+  </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script>
@@ -84,9 +176,14 @@
     let pageNum = 1;
     let pageRendering = false;
     let pageNumPending = null;
-    const scale = 1.5;
     const canvas = document.getElementById('pdf-canvas');
     const ctx = canvas.getContext('2d');
+
+    // Calculate scale to fit screen width
+    function getScale() {
+      const maxWidth = Math.min(window.innerWidth * 0.9, 1200);
+      return maxWidth / 612; // 612 is standard PDF page width in points
+    }
 
     // Load PDF
     pdfjsLib.getDocument(url).promise.then(function(pdfDoc_) {
@@ -98,6 +195,7 @@
     function renderPage(num) {
       pageRendering = true;
       pdfDoc.getPage(num).then(function(page) {
+        const scale = getScale();
         const viewport = page.getViewport({scale: scale});
         canvas.height = viewport.height;
         canvas.width = viewport.width;
@@ -151,6 +249,11 @@
     document.addEventListener('keydown', function(e) {
       if (e.key === 'ArrowLeft') onPrevPage();
       if (e.key === 'ArrowRight') onNextPage();
+    });
+
+    // Re-render on window resize to maintain fit
+    window.addEventListener('resize', function() {
+      renderPage(pageNum);
     });
   </script>
 </body>
