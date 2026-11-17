@@ -53,9 +53,6 @@
       padding: 8px 20px 24px;
       align-items: start;
     }
-    @media (min-width: 1000px) {
-      .main.open { grid-template-columns: minmax(0, 1fr) 440px; }
-    }
 
     /* Map */
     .map-area { min-width: 0; }
@@ -110,32 +107,51 @@
     .chip[aria-pressed="true"] { background: var(--tint); border-color: var(--c); font-weight: 600; }
     .hint { text-align: center; color: var(--muted); font-size: 14px; margin: 10px 0 0; }
 
-    /* Panel */
+    /* Shadow box */
     .panel {
-      background: var(--card);
-      border-radius: 16px;
-      box-shadow: 0 6px 30px rgba(60, 40, 30, .12);
+      width: min(940px, calc(100vw - 32px));
+      max-height: calc(100vh - 48px);
+      padding: 0; border: 0;
+      background: var(--card); color: var(--ink);
+      border-radius: 18px;
+      box-shadow: 0 24px 80px rgba(40, 25, 15, .35), 0 0 0 1px rgba(0,0,0,.04);
       overflow: auto;
-      position: sticky; top: 12px;
-      max-height: calc(100vh - 110px);
     }
-    .panel[hidden] { display: none; }
+    .panel::backdrop {
+      background: rgba(40, 30, 20, .45);
+      backdrop-filter: blur(2px);
+    }
+    .panel[open] { animation: pop .22s ease-out; }
+    .panel[open]::backdrop { animation: fade .22s ease-out; }
+    @keyframes pop { from { opacity: 0; transform: translateY(10px) scale(.97); } to { opacity: 1; transform: none; } }
+    @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
     .panel-head {
       display: flex; align-items: center; gap: 14px;
-      padding: 16px 16px 16px 18px;
+      padding: 16px 16px 16px 20px;
       background: var(--c); color: var(--head-ink);
       position: sticky; top: 0; z-index: 1;
+    }
+    .panel-head .band { margin-left: auto; background: rgba(255,255,255,.3); border-color: transparent; }
+    .panel-head .band button { color: var(--head-ink); }
+    .panel-head .band button[aria-pressed="true"] { background: #fff; color: var(--ink); }
+    .panel-head .band button:focus-visible { outline: 3px solid #fff; }
+    .cols { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0 28px; }
+    @media (min-width: 760px) {
+      .cols { grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); }
+    }
+    @media (max-width: 759px) {
+      .cols > div + div > h3:first-child { margin-top: 22px; }
     }
     .panel-head img { width: 56px; height: 56px; flex: none; border-radius: 50%; box-shadow: 0 0 0 4px rgba(255,255,255,.35); }
     .panel-head h2 { margin: 0; font-size: 1.35rem; line-height: 1.15; font-weight: 700; outline: none; }
     .panel-head .sub { font-size: 13px; opacity: .85; letter-spacing: .5px; text-transform: lowercase; }
     .close {
-      margin-left: auto; align-self: flex-start;
+      flex: none;
       background: rgba(255,255,255,.3); color: inherit; border: 0;
       width: 34px; height: 34px; border-radius: 50%; font-size: 20px; line-height: 1; cursor: pointer;
     }
     .close:hover, .close:focus-visible { background: rgba(255,255,255,.55); outline: none; }
-    .panel-body { padding: 16px 20px 8px; }
+    .panel-body { padding: 18px 24px 4px; }
     .panel-body h3 {
       font-size: 12px; text-transform: uppercase; letter-spacing: 1px;
       color: var(--muted); margin: 20px 0 6px; font-weight: 700;
@@ -147,8 +163,6 @@
     }
     .provocation h3 { margin-top: 2px; }
     .provocation p { margin: 4px 0 8px; font-style: italic; }
-    .band-row { display: flex; align-items: center; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
-    .band-row span { font-size: 13px; color: var(--muted); }
     .band { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; padding: 3px; background: #f4f1ed; }
     .band button {
       font: 600 14px var(--font); border: 0; background: transparent; color: var(--muted);
@@ -167,7 +181,7 @@
     .tangle-chips { display: flex; flex-wrap: wrap; gap: 8px; }
     .panel-foot {
       display: flex; justify-content: space-between; gap: 10px;
-      padding: 14px 20px 18px; border-top: 1px solid var(--line); margin-top: 18px;
+      padding: 14px 24px 18px; border-top: 1px solid var(--line); margin-top: 18px;
     }
     .step {
       font: 500 14px var(--font); background: #f4f1ed; color: var(--ink);
@@ -175,17 +189,19 @@
     }
     .step:hover, .step:focus-visible { background: #e9e4de; outline: none; }
 
-    .scrim { display: none; }
     @media (max-width: 999px) {
-      .panel {
-        position: fixed; left: 0; right: 0; bottom: 0; top: auto; z-index: 20;
-        max-height: 86vh; border-radius: 18px 18px 0 0;
-      }
-      .scrim.on {
-        display: block; position: fixed; inset: 0; z-index: 19; background: rgba(30,20,10,.3);
-      }
       .back { position: static; display: inline-block; margin-bottom: 4px; }
       #map { max-height: none; }
+    }
+    @media (max-width: 560px) {
+      .panel { width: calc(100vw - 16px); max-height: calc(100vh - 16px); border-radius: 14px; }
+      .panel-head { flex-wrap: wrap; padding: 12px 12px 12px 14px; }
+      .panel-head img { width: 44px; height: 44px; }
+      .panel-head > div:not(.band) { flex: 1 1 50%; min-width: 0; }
+      .panel-head .band { order: 3; margin-left: 0; }
+      .close { margin-left: auto; }
+      .panel-body { padding: 14px 16px 4px; }
+      .panel-foot { padding: 12px 16px 14px; }
     }
 
     /* Footer */
@@ -196,11 +212,12 @@
 
     @media (prefers-reduced-motion: reduce) {
       .thread, .node, .node .pill { transition: none; }
+      .panel[open], .panel[open]::backdrop { animation: none; }
     }
     @media print {
-      .back, .map-area, .panel-foot, .close, .scrim, footer .about, .band-row { display: none !important; }
-      .main { display: block; padding: 0; }
-      .panel { position: static; box-shadow: none; max-height: none; overflow: visible; }
+      .top, .map-area, footer, .panel-foot, .close, .panel-head .band { display: none !important; }
+      .panel { position: static; box-shadow: none; max-height: none; overflow: visible; width: 100%; }
+      .panel::backdrop { background: none; }
       .panel-head { position: static; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     }
   </style>
@@ -218,9 +235,8 @@
       <nav class="chips" id="chips" aria-label="Dimensions"></nav>
       <p class="hint">Each dimension has a question for students and an idea to try, for K-7 and 8-12.</p>
     </section>
-    <aside id="panel" class="panel" hidden aria-labelledby="panel-title"></aside>
   </main>
-  <div class="scrim" id="scrim"></div>
+  <dialog id="panel" class="panel" aria-labelledby="panel-title"></dialog>
 
   <footer>
     <div class="about">
@@ -426,8 +442,6 @@
     try { const saved = localStorage.getItem("ed-band"); if (saved === "k7" || saved === "s812") band = saved; } catch (e) {}
 
     const panel = document.getElementById("panel");
-    const main = document.getElementById("main");
-    const scrim = document.getElementById("scrim");
 
     function highlight(id) {
       svg.classList.toggle("has-sel", !!id);
@@ -461,38 +475,39 @@
         <div class="panel-head">
           <img src="icons/${d.id}.png" alt="">
           <div><h2 id="panel-title" tabindex="-1">${esc(d.name)}</h2><div class="sub">dimension</div></div>
+          <div class="band" role="group" aria-label="Grade band">
+            <button type="button" data-band="k7" aria-pressed="${band === "k7"}">K-7</button>
+            <button type="button" data-band="s812" aria-pressed="${band === "s812"}">8-12</button>
+          </div>
           <button class="close" type="button" aria-label="Close">×</button>
         </div>
-        <div class="panel-body">
-          <p class="desc">${esc(d.description)}</p>
-          <div class="provocation">
-            <h3>Provocation</h3>
-            ${d.provocation.map(q => `<p>${esc(q)}</p>`).join("")}
-          </div>
-          <div class="band-row">
-            <div class="band" role="group" aria-label="Grade band">
-              <button type="button" data-band="k7" aria-pressed="${band === "k7"}">K-7</button>
-              <button type="button" data-band="s812" aria-pressed="${band === "s812"}">8-12</button>
+        <div class="panel-body cols">
+          <div>
+            <p class="desc">${esc(d.description)}</p>
+            <div class="provocation">
+              <h3>Provocation</h3>
+              ${d.provocation.map(q => `<p>${esc(q)}</p>`).join("")}
             </div>
-            <span>Grade band</span>
+            <h3>Ask your students</h3>
+            <p class="ask">${esc(d.ask[band])}</p>
+            <h3>Tangles with</h3>
+            <div class="tangle-chips">
+              ${d.tangles.map(t => {
+                const o = byId[t];
+                return `<button class="chip" type="button" data-go="${o.id}" style="--c:${o.color}; --tint:${tint(o.color, 0.8)}"><span class="dot"></span>${esc(o.name)}</button>`;
+              }).join("")}
+            </div>
           </div>
-          <h3>Ask your students</h3>
-          <p class="ask">${esc(d.ask[band])}</p>
-          <h3>Idea extension</h3>
-          <div class="idea">
-            <h4>${esc(idea.title)}</h4>
-            <p class="meta">${esc(idea.time)} · ${band === "k7" ? "K-7" : "8-12"}</p>
-            <ol>${idea.steps.map(s => `<li>${esc(s)}</li>`).join("")}</ol>
-            <p class="idea-ask"><strong>Ask:</strong> ${esc(idea.ask)}</p>
-            ${idea.link ? `<p class="idea-ask"><a href="${esc(idea.link.href)}" target="_blank" rel="noopener">${esc(idea.link.text)} ↗</a></p>` : ""}
-            ${idea.note ? `<p class="note">${esc(idea.note)}</p>` : ""}
-          </div>
-          <h3>Tangles with</h3>
-          <div class="tangle-chips">
-            ${d.tangles.map(t => {
-              const o = byId[t];
-              return `<button class="chip" type="button" data-go="${o.id}" style="--c:${o.color}; --tint:${tint(o.color, 0.8)}"><span class="dot"></span>${esc(o.name)}</button>`;
-            }).join("")}
+          <div>
+            <h3>Idea extension</h3>
+            <div class="idea">
+              <h4>${esc(idea.title)}</h4>
+              <p class="meta">${esc(idea.time)} · ${band === "k7" ? "K-7" : "8-12"}</p>
+              <ol>${idea.steps.map(s => `<li>${esc(s)}</li>`).join("")}</ol>
+              <p class="idea-ask"><strong>Ask:</strong> ${esc(idea.ask)}</p>
+              ${idea.link ? `<p class="idea-ask"><a href="${esc(idea.link.href)}" target="_blank" rel="noopener">${esc(idea.link.text)} ↗</a></p>` : ""}
+              ${idea.note ? `<p class="note">${esc(idea.note)}</p>` : ""}
+            </div>
           </div>
         </div>
         <div class="panel-foot">
@@ -518,29 +533,32 @@
       current = id;
       highlight(id);
       renderPanel(d);
-      panel.hidden = false;
-      main.classList.add("open");
-      scrim.classList.add("on");
+      if (!panel.open) panel.showModal();
       panel.scrollTop = 0;
       try { history.replaceState(null, "", "#" + id); } catch (e) {}
       const title = panel.querySelector("#panel-title");
       if (title) title.focus({ preventScroll: true });
-      if (window.innerWidth >= 1000) {
-        const top = main.getBoundingClientRect().top;
-        if (top < 0) window.scrollBy({ top: top - 8, behavior: reduce ? "auto" : "smooth" });
-      }
     }
 
     function close() {
+      if (panel.open) panel.close();
+    }
+
+    // runs however the box closes: ×, Esc, or a click outside it
+    panel.addEventListener("close", () => {
       current = null;
       highlight(null);
-      panel.hidden = true;
-      main.classList.remove("open");
-      scrim.classList.remove("on");
       try { history.replaceState(null, "", location.pathname + location.search); } catch (e) {}
       if (opener && document.contains(opener)) opener.focus();
       opener = null;
-    }
+    });
+    // click on the dimmed area outside the box closes it
+    panel.addEventListener("click", e => {
+      if (e.target !== panel) return;
+      const r = panel.getBoundingClientRect();
+      const inside = e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom;
+      if (!inside) close();
+    });
 
     // ---------- events ----------
     Object.values(nodes).forEach(g => {
@@ -554,12 +572,10 @@
     });
     gCenter.addEventListener("click", close);
     gCenter.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); close(); } });
-    scrim.addEventListener("click", close);
 
     document.addEventListener("keydown", e => {
       if (!current) return;
-      if (e.key === "Escape") close();
-      else if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+      if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
         const d = byId[current];
         const step = e.key === "ArrowRight" ? 1 : -1;
         select(DIMENSIONS[(d.index + step + DIMENSIONS.length) % DIMENSIONS.length].id);
@@ -567,8 +583,12 @@
     });
 
     // open from a link like interactive.html#data
-    const start = decodeURIComponent(location.hash.slice(1));
-    if (byId[start]) select(start);
+    function fromHash() {
+      const id = decodeURIComponent(location.hash.slice(1));
+      if (byId[id] && id !== current) select(id);
+    }
+    window.addEventListener("hashchange", fromHash);
+    fromHash();
   })();
   </script>
 </body>

@@ -154,31 +154,29 @@ const DIMENSIONS = [
       "When we make things with AI, where is the line between our ideas and its patterns? Can we move it?"
     ],
     ask: {
-      k7: "If a computer makes a picture, who made it?",
-      s812: "Where does your idea end and the machine's begin?"
+      k7: "What makes something sound like you?",
+      s812: "What can you add that the machine can't?"
     },
     idea: {
       k7: {
-        title: "Draw what it missed",
-        time: "40 min",
+        title: "Make it ours",
+        time: "30 min",
         steps: [
-          "Show a few AI images of “a kid at school.”",
-          "What's the same in every picture? Who isn't there?",
-          "Draw your own kid at your own school."
+          "Ask the AI for a short poem about rain.",
+          "Change it together. Add our place, our weather, our names, and something silly only we would know.",
+          "Read both versions aloud."
         ],
-        ask: "Who made your picture? Who made the computer's?"
+        ask: "Which one sounds like us, and why?"
       },
       s812: {
-        title: "Who is in the picture",
-        time: "70 min",
-        source: "Lesson 3",
+        title: "Make it strange",
+        time: "40 min",
         steps: [
-          "Predict what you'll get for “a student in our town.”",
-          "Generate it several times. Compare with your predictions.",
-          "Make the picture the machine couldn't: draw, collage, photograph or write."
+          "Ask the AI for “a poem about the ocean.” Notice how generic it is.",
+          "Rewrite it so it could only be about your ocean, your town, your life. Add names, smells and odd details.",
+          "Mark every line in your version that the AI could never have written."
         ],
-        ask: "What did you put in that the machine left out?",
-        note: "Don't generate images of real students."
+        ask: "What did you add that the average left out?"
       }
     },
     tangles: ["data", "relational"]
