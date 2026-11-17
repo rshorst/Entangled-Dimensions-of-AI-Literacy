@@ -8,15 +8,38 @@
     description   the map text (unchanged, two typos fixed)
     provocation   the carousel provocation(s), verbatim
                   (Creative is a simpler version for K-12)
-    ask           a question for students, one per grade band
+    question      the question for students, for both grade bands
     idea          the idea extension, one per grade band:
-                    title, time, steps, ask, and an optional note
-                    (source is for you only; the site doesn't show it)
+                    title, steps, and an optional note
+    refs          sources behind the activities, shown in the References popup
     tangles       other dimensions this one pulls on (ids from this file)
 
   Grade bands: k7 = K-7, s812 = 8-12.
   Order below is the order prev/next steps through (clockwise from Data).
+
+  Activities adapted from a November 2026 research scan. Only sources that
+  could be found and opened are listed in refs.
 */
+
+const GENERAL_REFS = [
+  {
+    text: "NYC Public Schools (2026). Exploring Equity in AI: critical AI lesson plans and policy proposals from teacher fellows.",
+    href: "https://sites.google.com/schools.nyc.gov/cs4all-equity"
+  },
+  {
+    text: "Focused Education Resources (2025–26). Student Artificial Intelligence Lessons, K-3, 4-7 and 8-12, developed with BC teachers.",
+    href: "https://focusedresources.ca/student-artificial-intelligence-lessons"
+  },
+  {
+    text: "European School Education Platform (2026). Learning activity ideas for using AI with learners.",
+    href: "https://school-education.ec.europa.eu/en/node/6756085"
+  }
+];
+
+const CSTA = {
+  text: "Computer Science Teachers Association (2026). CSTA PK–12 Computer Science Standards.",
+  href: "https://csteachers.org/pk12standards/"
+};
 
 const DIMENSIONS = [
   {
@@ -29,35 +52,27 @@ const DIMENSIONS = [
     provocation: [
       "How do practices of data collection reflect and reproduce existing power structures?"
     ],
-    ask: {
-      k7: "What might a computer never learn about?",
-      s812: "Who is missing from the data this tool learned from?"
-    },
+    question: "Who decided what the machine should learn, and who is affected by what was left out?",
     idea: {
       k7: {
-        title: "What's missing from the box",
-        time: "30 min",
+        title: "Train a terrible AI",
         steps: [
-          "Fill a box with picture cards that are all alike, like red apples and green pears.",
-          "Make a rule together: “Fruit is round, and red or green.”",
-          "Pull out a banana. Does the rule still work?"
-        ],
-        ask: "What would we need to add to the box?"
+          "Give two groups picture cards to sort, like things that can be recycled. One group gets a narrow set, the other a varied set.",
+          "Each group sorts new objects using only what their cards taught them.",
+          "Compare the mistakes. Change the cards and try again."
+        ]
       },
       s812: {
-        title: "Ask it about here",
-        time: "25 min",
-        source: "activity bank #9, Lesson 6",
+        title: "The missing-data experiment",
         steps: [
-          "Ask the model about your own community: its history, a recent event, a local place.",
-          "Mark each answer: right, made up, or too general.",
-          "Talk about what never gets written down or put online."
-        ],
-        ask: "What did it replace local knowledge with?",
-        note: "Some knowledge isn't the machine's to hold."
+          "Build or simulate a simple classifier from a small dataset. Leave some kinds of examples out on purpose.",
+          "Test it, then add the missing cases.",
+          "Look at whose situations it handles badly."
+        ]
       }
     },
-    tangles: ["epistemic", "political"]
+    refs: [CSTA],
+    tangles: ["algorithmic", "political"]
   },
 
   {
@@ -70,34 +85,26 @@ const DIMENSIONS = [
     provocation: [
       "How do algorithmic systems shape not just what we encounter in our daily lives, but what we come to value, believe, and know?"
     ],
-    ask: {
-      k7: "What rules might a computer follow to pick what you see?",
-      s812: "What is this system deciding for you?"
-    },
+    question: "What changes when we change the goal, not just the algorithm?",
     idea: {
       k7: {
-        title: "Be the algorithm",
-        time: "25 min",
+        title: "Invent a recommendation machine",
         steps: [
-          "Give each group a sorting rule, like “things for playing go here.”",
-          "Follow the rule exactly. No exceptions.",
-          "Compare piles. What ended up in the wrong place?"
-        ],
-        ask: "Who wrote the rule, and who did it leave out?"
+          "Design a paper machine that recommends books three ways: most popular, most similar, most surprising.",
+          "Run the class's favourite books through each version.",
+          "Which books get seen, and which disappear?"
+        ]
       },
       s812: {
-        title: "Read what nobody typed",
-        time: "20 min",
-        source: "adapted from activity bank #2",
+        title: "Design an unfair decision-maker",
         steps: [
-          "Ask Copilot for “a group of people at work” five times.",
-          "List everything in the pictures that nobody typed.",
-          "Ask Copilot what prompt it used. Compare."
-        ],
-        ask: "What did it decide for us, and where did it learn that?",
-        note: "Copilot doesn't show its real prompt, so its answer is an account, not a record."
+          "Groups get made-up student profiles and a few tutoring spots. Each writes a rule: by grades, by need, or by student choice.",
+          "Run the same profiles through every rule and compare who gets help.",
+          "Discuss which decisions shouldn't be automated at all."
+        ]
       }
     },
+    refs: [CSTA],
     tangles: ["data", "political"]
   },
 
@@ -112,35 +119,27 @@ const DIMENSIONS = [
       "What futures are enabled and constrained in the design and deployment of AI?",
       "How can we create space for alternative, speculative, or radically different futures to emerge?"
     ],
-    ask: {
-      k7: "What do you hope AI will be like when you grow up?",
-      s812: "Whose future is this technology building?"
-    },
+    question: "What future does this technology assume, and what else could we imagine?",
     idea: {
       k7: {
-        title: "Postcard from the future",
-        time: "30 min",
+        title: "Two futures for our school",
         steps: [
-          "Imagine it's twenty years from now.",
-          "Draw a postcard of a day with AI in it.",
-          "Share. Who is happy? Who is left out?"
-        ],
-        ask: "What future do we want?"
+          "Imagine our school in 2035: one future where technology deepens community and connection to place, one where something is lost.",
+          "Draw a third future that keeps what you want and refuses what you don't.",
+          "Pick one thing we could do now to help it happen."
+        ]
       },
       s812: {
-        title: "Place it on the map",
-        time: "40 min",
-        source: "uses the AI Futures map",
+        title: "An artifact from a future that doesn't exist yet",
         steps: [
-          "Read a few quotes on the AI Futures map.",
-          "Place an AI headline or ad on the map. What future is it selling?",
-          "Write one line from a future that doesn't fit the map."
-        ],
-        ask: "Who is writing this future?",
-        link: { text: "AI Futures map", href: "https://rshorst.github.io/AI-Futures/" }
+          "Invent something from a future of education: a school policy, a community-owned AI service, an assessment system, a language-learning tool.",
+          "Make a prototype.",
+          "Explain who governs it, what it values, and who it leaves out."
+        ]
       }
     },
-    tangles: ["political", "creative"]
+    refs: [],
+    tangles: ["political", "ecological"]
   },
 
   {
@@ -153,32 +152,32 @@ const DIMENSIONS = [
     provocation: [
       "When we make things with AI, where is the line between our ideas and its patterns? Can we move it?"
     ],
-    ask: {
-      k7: "What makes something sound like you?",
-      s812: "What can you add that the machine can't?"
-    },
+    question: "Does making something faster make it more creative?",
     idea: {
       k7: {
-        title: "Make it ours",
-        time: "30 min",
+        title: "Draw it, transform it, draw it again",
         steps: [
-          "Ask the AI for a short poem about rain.",
-          "Change it together. Add our place, our weather, our names, and something silly only we would know.",
-          "Read both versions aloud."
+          "Students draw an imaginary creature, place or machine.",
+          "On the teacher's screen, AI turns a drawing into something new. What was kept, missed or added?",
+          "Students draw again, on their own terms."
         ],
-        ask: "Which one sounds like us, and why?"
+        note: "Only use drawings from students who agree."
       },
       s812: {
-        title: "Make it strange",
-        time: "40 min",
+        title: "The transmediation experiment",
         steps: [
-          "Ask the AI for “a poem about the ocean.” Notice how generic it is.",
-          "Rewrite it so it could only be about your ocean, your town, your life. Add names, smells and odd details.",
-          "Mark every line in your version that the AI could never have written."
-        ],
-        ask: "What did you add that the average left out?"
+          "Start with your own photo, poem or drawing. Transform it with AI.",
+          "Remake the result in a different medium.",
+          "Note moments of intention, surprise and loss. Write an artist statement: who contributed what?"
+        ]
       }
     },
+    refs: [
+      {
+        text: "Wang, Y., & Zhang, X. (2026). From making to judging: Art education in the AI era.",
+        href: "https://doi.org/10.1177/27018466261474803"
+      }
+    ],
     tangles: ["data", "relational"]
   },
 
@@ -192,35 +191,33 @@ const DIMENSIONS = [
     provocation: [
       "What kinds of relationships are made possible—or impossible—through AI systems, and on whose terms?"
     ],
-    ask: {
-      k7: "Who helps you learn?",
-      s812: "What changes between people when AI is in the middle?"
-    },
+    question: "When does AI support our relationships, and when does it replace them?",
     idea: {
       k7: {
-        title: "Who helped me learn this?",
-        time: "25 min",
+        title: "Who can help, and how?",
         steps: [
-          "Pick something you know how to do, like ride a bike.",
-          "Draw everyone and everything that helped you learn it.",
-          "Where do computers show up? Where don't they?"
-        ],
-        ask: "What can a person teach you that a computer can't?"
+          "Read short made-up situations: confused about homework, lonely at recess, learning a new skill, upset after an argument.",
+          "Make a helping map: friends, teachers, family, books, community, AI.",
+          "Which kinds of help need a person?"
+        ]
       },
       s812: {
-        title: "Translate and check",
-        time: "40 min",
-        source: "activity bank #5",
+        title: "When a chatbot sounds like a friend",
         steps: [
-          "Translate a short passage into a language someone in the room speaks.",
-          "Check it line by line with that person.",
-          "List what went missing: tone, respect, humour."
+          "Compare three made-up chatbot replies: one flatters, one asks questions, one admits its limits and points to people.",
+          "Talk about how each builds trust or dependence.",
+          "Rewrite the chatbot's boundaries."
         ],
-        ask: "What went missing that wasn't a word?",
-        note: "Ask before putting anyone on the spot. Some communities keep their languages out of these systems on purpose."
+        note: "Use made-up conversations only. Some students may already turn to chatbots for support, so handle this gently."
       }
     },
-    tangles: ["epistemic", "data"]
+    refs: [
+      {
+        text: "Bonnesen, K., Krygsman, A., Hobson, S., Korczak, D., & Vaillancourt, T. (2026). Affective generative AI use and emotional problems among Ontario students. JAMA Pediatrics. (University of Ottawa summary)",
+        href: "https://www.uottawa.ca/en/news-all/uottawa-study-finds-ai-use-emotional-support-may-signal-youth-distress"
+      }
+    ],
+    tangles: ["knowledge", "political"]
   },
 
   {
@@ -234,34 +231,36 @@ const DIMENSIONS = [
       "What do terms of service, documentation, and model cards reveal—and conceal—about how AI systems operate and are governed?",
       "How can users critically navigate these texts to understand power, accountability, and control?"
     ],
-    ask: {
-      k7: "Who gets to make the rules about AI in our class?",
-      s812: "Who makes the rules for this tool, and who profits?"
-    },
+    question: "Who gets to decide about AI, and who has the right to refuse?",
     idea: {
       k7: {
-        title: "Rules for a robot helper",
-        time: "30 min",
+        title: "The classroom AI council",
         steps: [
-          "Imagine our class gets a robot helper.",
-          "Each student draws one thing it could do and one thing it shouldn't.",
-          "Sort them: We will. We won't. We'll ask first."
-        ],
-        ask: "Who should get to make these rules?"
+          "Pose a decision: should our school use AI to give feedback on writing?",
+          "Groups take roles: students, teachers, families, school leaders, accessibility advocates, community knowledge stewards.",
+          "Each names benefits, risks and conditions. Negotiate a shared decision."
+        ]
       },
       s812: {
-        title: "Write the class AI agreement",
-        time: "70 min",
-        source: "Lesson 1",
+        title: "Write the school's AI legislation",
         steps: [
-          "Each student writes one way AI helps them learn and one way it gets in the way.",
-          "Ask the model to write a class AI policy. What did it assume?",
-          "Write ours: We will. We won't. We'll ask first. Give a reason for each line."
-        ],
-        ask: "Which line will be hardest to keep?"
+          "Hold a student assembly. Groups research one interest: privacy, assessment, ownership, environment, student voice.",
+          "Each group proposes rules.",
+          "Debate, amend and vote."
+        ]
       }
     },
-    tangles: ["relational", "data"]
+    refs: [
+      {
+        text: "Day of AI (2026). Student Senate: AI Policy in Schools, grades 6-12.",
+        href: "https://dayofai.org/units/student-senate-ai-policy-in-schools-grades-6-12"
+      },
+      {
+        text: "First Nations Technology Council. Pathways to AI.",
+        href: "https://www.technologycouncil.ca/pathways-to-ai/"
+      }
+    ],
+    tangles: ["relational", "futures"]
   },
 
   {
@@ -275,34 +274,27 @@ const DIMENSIONS = [
       "How do different disciplines structure problems, select methods, and validate knowledge in relation to AI?",
       "What assumptions underlie disciplinary applications of AI—and how can interdisciplinary approaches expose or reconfigure those assumptions?"
     ],
-    ask: {
-      k7: "Would a scientist and a storyteller answer the same way?",
-      s812: "What counts as a good answer in this subject?"
-    },
+    question: "Who has the expertise to judge whether AI's suggestion is any good?",
     idea: {
       k7: {
-        title: "Scientist or storyteller?",
-        time: "30 min",
+        title: "One object, two ways of knowing",
         steps: [
-          "Ask the chatbot about rain, first like a scientist, then like a storyteller.",
-          "Sort the sentences: which need proof, and which are about imagining?",
-          "Talk about how each would check that something is true."
-        ],
-        ask: "Is there one right way to know about rain?"
+          "Look closely at something from outside: a leaf, a stone, a shell.",
+          "Ask the AI for a science explanation and a poem about it.",
+          "Compare both with what you saw. What can neither capture?"
+        ]
       },
       s812: {
-        title: "Rewrite the assignment",
-        time: "30 min",
-        source: "activity bank #10",
+        title: "AI in the science lab",
         steps: [
-          "Give the model a real assignment and let it do the task.",
-          "Mark it against the criteria.",
-          "Change one thing so that answer wouldn't be enough."
-        ],
-        ask: "What was this task really asking for?"
+          "Students write their own hypothesis and experiment plan.",
+          "AI suggests other methods. Judge each against variables, controls, safety and measurement.",
+          "Keep a log of what you accepted and rejected, and why."
+        ]
       }
     },
-    tangles: ["knowledge", "epistemic"]
+    refs: [],
+    tangles: ["epistemic", "knowledge"]
   },
 
   {
@@ -315,33 +307,25 @@ const DIMENSIONS = [
     provocation: [
       "How do AI systems encode epistemic assumptions—about truth, evidence, coherence, or relevance—and how might these reshape our understanding of what it means to know?"
     ],
-    ask: {
-      k7: "Can something sound sure and still be wrong?",
-      s812: "How sure should this answer be?"
-    },
+    question: "When does a fluent explanation become knowledge you can trust?",
     idea: {
       k7: {
-        title: "Ask twice, then check",
-        time: "20 min",
+        title: "The confident answer detective",
         steps: [
-          "Ask the chatbot a question. Read the answer.",
-          "Ask again in a new chat. Same answer?",
-          "Check one fact in a book or with someone who knows."
-        ],
-        ask: "How can we tell if something is true?"
+          "Show three answers to a simple science question: one from AI, one from a field guide, one from the class's own observation.",
+          "Find what can be checked, what's uncertain, and what has evidence."
+        ]
       },
       s812: {
-        title: "Run it twice",
-        time: "60 min",
-        source: "Lesson 2",
+        title: "Follow the citation",
         steps: [
-          "Ask the model a question from your unit. Then ask again in a new chat.",
-          "Compare the answers line by line.",
-          "Check three claims against a good source."
-        ],
-        ask: "Which sentence sounded most sure, and should it have?"
+          "Give students an AI explanation with references: some real, some weak, some made up.",
+          "Trace each claim back to its source.",
+          "Label each one: supported, contradicted, or can't be checked."
+        ]
       }
     },
+    refs: [],
     tangles: ["knowledge", "disciplinary"]
   },
 
@@ -356,34 +340,32 @@ const DIMENSIONS = [
       "What can we learn about knowledge itself by learning to converse well with AI?",
       "How do prompting practices surface assumptions about relevance, authority, sourcing, and the structures through which knowledge is assembled?"
     ],
-    ask: {
-      k7: "How do you know when you've really learned something?",
-      s812: "Do you know it, or do you just have the answer?"
-    },
+    question: "What is the difference between getting an answer and being able to answer?",
     idea: {
       k7: {
-        title: "Teach it back",
-        time: "25 min",
+        title: "The helping ladder",
         steps: [
-          "Ask the chatbot to explain something new, like how bees make honey.",
-          "Close the screen. Explain it to a partner without looking.",
-          "Your partner asks one “why” question. Can you answer it?"
-        ],
-        ask: "How can you tell something is really in your head?"
+          "Students try a challenge on their own first.",
+          "Compare kinds of help: an answer, a hint, a question, an example, a friend.",
+          "Try a new problem alone. Which help made that possible?"
+        ]
       },
       s812: {
-        title: "Know it or have it?",
-        time: "40 min",
+        title: "Design an AI tutor that won't do the thinking",
         steps: [
-          "Pick an idea from your unit. Rate how well you know it, 1 to 5.",
-          "Ask the model to explain it. Rate again.",
-          "Close everything. Explain it to a partner or use it on a new problem. Rate again."
-        ],
-        ask: "When did it feel like knowing, and when was it knowing?",
-        note: "A smooth explanation can make us feel we understand more than we do."
+          "Design a tutor that asks what you know, finds where you're stuck, and gives stronger hints step by step, never the answer first.",
+          "Prototype it on paper or as instructions for a chatbot. Test it with classmates.",
+          "Revise it so the learner stays in charge."
+        ]
       }
     },
-    tangles: ["epistemic", "creative"]
+    refs: [
+      {
+        text: "MPR News (2026, October 28). University of Minnesota report warns student AI use poses 'severe' threat to learning.",
+        href: "https://www.mprnews.org/story/2026/10/28/university-of-minnesota-report-warns-student-ai-use-poses-severe-threat-to-learning"
+      }
+    ],
+    tangles: ["epistemic", "relational"]
   },
 
   {
@@ -397,33 +379,32 @@ const DIMENSIONS = [
       "How do we weigh the environmental impacts of AI against its promises?",
       "What risks, harms, and extractive practices are too often left out of the conversation?"
     ],
-    ask: {
-      k7: "What does a computer need to answer your question?",
-      s812: "What does this cost the planet, and who pays?"
-    },
+    question: "When is a use worth its material and human costs?",
     idea: {
       k7: {
-        title: "Where does the answer live?",
-        time: "30 min",
+        title: "Make the invisible AI machine",
         steps: [
-          "Ask: where does a computer's answer come from? Collect guesses.",
-          "Show photos of a data centre.",
-          "Draw the trip your question takes, and what the building needs: power, water, land."
-        ],
-        ask: "Who lives near the building?"
+          "Draw a chatbot at the top of a big floor map.",
+          "Place cards underneath for what it runs on: data centres, electricity, water, chips, minerals, cables, workers.",
+          "Sort some tasks: which really need AI?"
+        ]
       },
       s812: {
-        title: "What does it cost",
-        time: "70 min",
-        source: "Lesson 4",
+        title: "Should our school use AI for this?",
         steps: [
-          "Ask the model how much energy and water one question uses.",
-          "Find real figures in pairs. Put the ranges on the board.",
-          "Find where your school's tools run, and who lives nearby."
+          "Groups take one proposed school AI use.",
+          "Research its benefits, energy and water needs, materials and human labour.",
+          "Make a recommendation, with uncertainties and non-AI alternatives."
         ],
-        ask: "How would you decide if it's worth it?"
+        note: "Don't quote one water or energy cost per prompt. Estimates vary a lot."
       }
     },
+    refs: [
+      {
+        text: "Environmental impacts of generative AI in education: A systematic review of educational and technical evidence (2026). Sustainability, 18, 7213.",
+        href: "https://mdpi-res.com/d_attachment/sustainability/sustainability-18-07213/article_deploy/sustainability-18-07213.pdf"
+      }
+    ],
     tangles: ["political", "futures"]
   }
 ];

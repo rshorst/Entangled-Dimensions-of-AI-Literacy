@@ -178,6 +178,32 @@
     .idea li { margin-bottom: 6px; }
     .idea-ask { margin: 8px 0 0; }
     .note { margin: 10px 0 0; font-size: 14px; color: var(--muted); background: #f6f3ef; border-radius: 8px; padding: 8px 10px; }
+    .linkish {
+      font: 500 14px var(--font); color: #4f5bd5; background: none; border: 0; padding: 0;
+      text-decoration: underline; text-underline-offset: 2px; cursor: pointer;
+    }
+    .linkish:focus-visible { outline: 2px solid #4f5bd5; outline-offset: 2px; }
+    .refs-link { margin: 18px 0 0; }
+
+    /* References popup */
+    .refs { width: min(720px, calc(100vw - 32px)); }
+    .refs-head {
+      display: flex; align-items: center; gap: 12px; padding: 16px 16px 14px 22px;
+      border-bottom: 1px solid var(--line); position: sticky; top: 0; background: var(--card); z-index: 1;
+    }
+    .refs-head h2 { margin: 0; font-size: 1.25rem; outline: none; }
+    .refs-head .close { margin-left: auto; background: #f1ede8; color: var(--ink); }
+    .refs-head .close:hover, .refs-head .close:focus-visible { background: #e6e1db; }
+    .refs-body { padding: 8px 24px 22px; }
+    .refs-lede { color: var(--muted); font-size: 14px; margin: 8px 0 4px; }
+    .refs-body h3 {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13px; text-transform: uppercase; letter-spacing: .8px; color: var(--muted);
+      margin: 20px 0 6px; scroll-margin-top: 70px;
+    }
+    .refs-body h3 .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--c); }
+    .refs-body ul { margin: 0; padding-left: 20px; }
+    .refs-body li { margin-bottom: 8px; font-size: 15px; }
     .tangle-chips { display: flex; flex-wrap: wrap; gap: 8px; }
     .panel-foot {
       display: flex; justify-content: space-between; gap: 10px;
@@ -237,11 +263,13 @@
     </section>
   </main>
   <dialog id="panel" class="panel" aria-labelledby="panel-title"></dialog>
+  <dialog id="refs" class="panel refs" aria-labelledby="refs-title"></dialog>
 
   <footer>
     <div class="about">
-      <p>Every idea here runs on a teacher's screen, so students don't need accounts. Most AI tools have age limits, so with younger students the teacher drives.</p>
+      <p>Most ideas run on a teacher's screen or on paper, so students don't need accounts. Most AI tools have age limits, so with younger students the teacher drives.</p>
       <p>The dimensions aren't a checklist. Any one idea pulls on several at once, which is the point.</p>
+      <p><button class="linkish" type="button" id="open-refs">References</button></p>
     </div>
     <p class="cite">
       Horst, R. (2025). Entangled dimensions of AI literacy: A framework for computational sense-making. University of British Columbia.
@@ -489,7 +517,7 @@
               ${d.provocation.map(q => `<p>${esc(q)}</p>`).join("")}
             </div>
             <h3>Ask your students</h3>
-            <p class="ask">${esc(d.ask[band])}</p>
+            <p class="ask">${esc(d.question || (d.ask && d.ask[band]) || "")}</p>
             <h3>Tangles with</h3>
             <div class="tangle-chips">
               ${d.tangles.map(t => {
@@ -497,14 +525,15 @@
                 return `<button class="chip" type="button" data-go="${o.id}" style="--c:${o.color}; --tint:${tint(o.color, 0.8)}"><span class="dot"></span>${esc(o.name)}</button>`;
               }).join("")}
             </div>
+            ${(d.refs && d.refs.length) ? `<p class="refs-link"><button class="linkish" type="button" data-refs="${d.id}">References for ${esc(d.name)}</button></p>` : ""}
           </div>
           <div>
             <h3>Idea extension</h3>
             <div class="idea">
               <h4>${esc(idea.title)}</h4>
-              <p class="meta">${esc(idea.time)} · ${band === "k7" ? "K-7" : "8-12"}</p>
+              <p class="meta">${idea.time ? esc(idea.time) + " · " : ""}${band === "k7" ? "K-7" : "8-12"}</p>
               <ol>${idea.steps.map(s => `<li>${esc(s)}</li>`).join("")}</ol>
-              <p class="idea-ask"><strong>Ask:</strong> ${esc(idea.ask)}</p>
+              ${idea.ask ? `<p class="idea-ask"><strong>Ask:</strong> ${esc(idea.ask)}</p>` : ""}
               ${idea.link ? `<p class="idea-ask"><a href="${esc(idea.link.href)}" target="_blank" rel="noopener">${esc(idea.link.text)} ↗</a></p>` : ""}
               ${idea.note ? `<p class="note">${esc(idea.note)}</p>` : ""}
             </div>
@@ -517,6 +546,7 @@
 
       panel.querySelector(".close").addEventListener("click", close);
       panel.querySelectorAll("[data-go]").forEach(b => b.addEventListener("click", () => select(b.dataset.go)));
+      panel.querySelectorAll("[data-refs]").forEach(b => b.addEventListener("click", () => openRefs(b.dataset.refs)));
       panel.querySelectorAll("[data-band]").forEach(b => b.addEventListener("click", () => {
         band = b.dataset.band;
         try { localStorage.setItem("ed-band", band); } catch (e) {}
@@ -560,6 +590,45 @@
       if (!inside) close();
     });
 
+    // ---------- references popup ----------
+    const refs = document.getElementById("refs");
+    function refItem(r) {
+      return `<li>${esc(r.text)} <a href="${esc(r.href)}" target="_blank" rel="noopener">Link ↗</a></li>`;
+    }
+    function renderRefs() {
+      const general = (typeof GENERAL_REFS !== "undefined" ? GENERAL_REFS : []);
+      const withRefs = DIMENSIONS.filter(d => d.refs && d.refs.length);
+      refs.innerHTML = `
+        <div class="refs-head">
+          <h2 id="refs-title" tabindex="-1">References</h2>
+          <button class="close" type="button" aria-label="Close references">×</button>
+        </div>
+        <div class="refs-body">
+          <p class="refs-lede">Sources behind the activities. The activities themselves are adapted for this framework.</p>
+          ${general.length ? `<h3>Collections</h3><ul>${general.map(refItem).join("")}</ul>` : ""}
+          ${withRefs.map(d => `
+            <h3 id="ref-${d.id}" style="--c:${d.color}"><span class="dot"></span>${esc(d.name)}</h3>
+            <ul>${d.refs.map(refItem).join("")}</ul>`).join("")}
+        </div>`;
+      refs.querySelector(".close").addEventListener("click", () => refs.close());
+    }
+    function openRefs(id) {
+      renderRefs();
+      if (!refs.open) refs.showModal();
+      const target = id && refs.querySelector("#ref-" + id);
+      if (target) target.scrollIntoView({ block: "start" });
+      else refs.scrollTop = 0;
+      const t = refs.querySelector("#refs-title");
+      if (t) t.focus({ preventScroll: true });
+    }
+    refs.addEventListener("click", e => {
+      if (e.target !== refs) return;
+      const r = refs.getBoundingClientRect();
+      const inside = e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom;
+      if (!inside) refs.close();
+    });
+    document.getElementById("open-refs").addEventListener("click", () => openRefs());
+
     // ---------- events ----------
     Object.values(nodes).forEach(g => {
       const id = g.dataset.id;
@@ -574,7 +643,7 @@
     gCenter.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); close(); } });
 
     document.addEventListener("keydown", e => {
-      if (!current) return;
+      if (!current || refs.open) return;
       if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
         const d = byId[current];
         const step = e.key === "ArrowRight" ? 1 : -1;
